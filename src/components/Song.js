@@ -7,7 +7,7 @@ const Song = (props) => {
     <tr className="song">
       <td>{props.song.title}</td>
       <td>{props.song.singer}</td>
-      <td><button onClick={props.play}>Play</button></td>
+      <td><button onClick={() => props.play(props)}>Play</button></td>
     </tr>
   )
 }

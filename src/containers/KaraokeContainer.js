@@ -4,13 +4,15 @@ import SongList from '../components/SongList';
 import KaraokeDisplay from '../components/KaraokeDisplay';
 //import allSongs from '../data/songs';
 const songURL = 'http://localhost:4000/users/3/songs'
+const singleSong = 'http://localhost:4000/users/3/songs/'
 class KaraokeContainer extends Component {
     constructor(){
       super()
       this.state = {
         allSongs: [],
         filteredSongs: [],
-        filterVal: ''
+        filterVal: '',
+        singleSong: []
       }
     }
 
@@ -28,11 +30,10 @@ class KaraokeContainer extends Component {
       console.log(filtered)
     }
 
-    playSong = (e) => {
-      console.log(e.target)
-      //onCLick works fine, cannot find way to associate with particular song.
-      //tried by key, tried assigning ID both with no luck
-      //would pass particular song to karaokeDisplay as props and render lyrics from there
+    playSong = (props) => {
+      fetch(singleSong+props.song.id)
+      .then(r => r.json())
+      .then(data => this.setState({singleSong: data},() => console.log(this.state.singleSong)))
     }
   render() {
     return (
@@ -41,7 +42,7 @@ class KaraokeContainer extends Component {
           <Filter handleChange={this.handleChange} value={this.state.filterVal} />
           <SongList play={this.playSong} songs={this.state.filteredSongs} />
         </div>
-        <KaraokeDisplay play={this.playSong} songs={this.state.filteredSongs} />
+        <KaraokeDisplay singleSong={this.state.singleSong} play={this.playSong} songs={this.state.filteredSongs} />
       </div>
     );
   }
